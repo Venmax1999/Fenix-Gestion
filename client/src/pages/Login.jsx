@@ -19,7 +19,11 @@ export default function Login() {
     }
     setLoading(true);
     try {
-      await login(email.trim(), password);
+      let finalEmail = email.trim();
+      if (!finalEmail.includes('@')) {
+        finalEmail = `${finalEmail}@fenix.com`;
+      }
+      await login(finalEmail, password);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -65,17 +69,17 @@ export default function Login() {
             Iniciar sesión
           </h2>
           <p className="text-xs mb-6" style={{ color: '#4a8f9e' }}>
-            Ingresá tu email y contraseña para continuar
+            Ingresá tu usuario (o email) y contraseña para continuar
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
-              <label className="label">Email</label>
+              <label className="label">Usuario o Email</label>
               <input
-                type="email"
+                type="text"
                 className="input"
-                placeholder="usuario@fenix.com"
+                placeholder="admin o usuario@fenix.com"
                 value={email}
                 onChange={e => { setEmail(e.target.value); setError(''); }}
                 autoComplete="email"
